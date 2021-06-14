@@ -28,6 +28,24 @@
       color: #545454;
       margin: 0;
     }
+    .content {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      justify-items: center;
+      gap: 10px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    .footer {
+      border-top: solid 1px #545454;
+    }
+    .footer__content {
+      font-size: 18px;
+      line-height: 22px;
+      color: #545454;
+      margin: 0;
+    }
+
   </style>
 </head>
 <body class="page">
@@ -35,12 +53,12 @@
     <h1 class="header__title">bandwidth-fix</h1>
   </header>
 
-  <main>
+  <main class="content">
 
   </main>
 
-  <footer>
-
+  <footer class="footer">
+    <p class="footer__content">&copy; 2021</p>
   </footer>
 </body>
 </html>
