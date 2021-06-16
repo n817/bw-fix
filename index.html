@@ -7,7 +7,7 @@
   <title>bandwidth-fix</title>
   <style>
     .page {
-      max-width: 1280px;
+      max-width: 800px;
       font-family: Arial, sans-serif;
       -moz-osx-font-smoothing: grayscale;
       -webkit-font-smoothing: antialiased;
@@ -23,9 +23,10 @@
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
-      width: 320px;
-      height: 320px;
+      width: 300px;
+      height: 300px;
       border: solid 1px #545454;
+      padding: 10px;
     }
     .page__section-title {
       font-size: 16px;
@@ -43,6 +44,8 @@
       line-height: 22px;
       font-weight: 900;
       color: #545454;
+      padding-top: 10px;
+      padding-left: 10px;
       margin: 0;
     }
     .content {
@@ -53,11 +56,16 @@
       padding-top: 10px;
       padding-bottom: 10px;
     }
+    @media screen and (max-width: 670px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+    }
     .form {
       box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
     }
     .form__input {
-      width: 100%;
+      width: 230px;
       border: 0;
       border-bottom: 1px solid rgba(0, 0, 0, .2);
       box-sizing: border-box;
@@ -70,8 +78,21 @@
       margin-top: 10px;
       margin-bottom: 10px;
     }
+    .settings__label {
+      font-size: 16px;
+      line-height: 16px;
+      color: #545454;
+      margin: 0;
+    }
+    .result__content {
+      font-size: 14px;
+      line-height: 1.2;
+      color: white;
+      margin: 0;
+    }
     .footer {
       border-top: solid 1px #545454;
+      padding-left: 10px;
     }
     .footer__content {
       font-size: 18px;
@@ -91,18 +112,45 @@
     <section class="settings page__section">
       <h2 class="page__section-title">settings</h2>
       <form class="form">
-        <input type="text" class="form__input" placeholder="" minlength="1" maxlength="100" required>
-        <input type="text" class="form__input" placeholder="" minlength="1" maxlength="100" required>
+        <label for="interface" class="settings__label">interface</label>
+        <input type="text" class="form__input" id="interface" placeholder="" minlength="1" maxlength="100" required>
+        <label for="bandwidth" class="settings__label">bandwidth</label>
+        <select name="" id="bandwidth">
+          <option value="">512 kbit/s</option>
+          <option value="">1 Mbit/s</option>
+          <option value="">1.5 Mbit/s</option>
+          <option value="">2 Mbit/s</option>
+        </select>
       </form>
     </section>
 
     <section class="result page__section">
       <h2 class="page__section-title">configuration</h2>
+      <p class="result__content">int GigabitEthernet0/0/2.1233490</p>
+      <p class="result__content">no service-policy input bronze_256K_in</p>
+      <p class="result__content">no service-policy input 512K_in</p>
+      <p class="result__content">no service-policy input bronze_512K_in</p>
+      <p class="result__content">no service-policy input 1M_in</p>
+      <p class="result__content">no service-policy input bronze_1M_in</p>
+      <p class="result__content">no service-policy input bronze_2M_in</p>
+      <p class="result__content">no service-policy output bronze_256K_out</p>
+      <p class="result__content">no service-policy output 512K_out</p>
+      <p class="result__content">no service-policy output bronze_512K_out</p>
+      <p class="result__content">no service-policy output 1M_out</p>
+      <p class="result__content">no service-policy output bronze_1M_out</p>
+      <p class="result__content">no service-policy output bronze_2M_out</p>
+      <p class="result__content">service-policy input bronze_1M_in</p>
+      <p class="result__content">service-policy output bronze_1M_out</p>
+      <p class="result__content">do sh run int GigabitEthernet0/0/2.1233490</p>
     </section>
   </main>
 
   <footer class="footer">
     <p class="footer__content">&copy; 2021</p>
   </footer>
+
+  <script>
+
+  </script>
 </body>
 </html>
