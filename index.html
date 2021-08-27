@@ -36,7 +36,7 @@
       align-self: center;
       color: #545454;
       margin: 0;
-      padding-bottom: 10px;
+      padding-bottom: 30px;
 }
     .header {
       border-bottom: solid 1px #545454;
@@ -77,14 +77,14 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
-      margin-top: 10px;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
     }
     .form__select {
       height: 20px;
       border-radius: 3px;
       font-size: 14px;
       line-height: 17px;
+      margin-bottom: 15px;
     }
     .settings__label {
       font-size: 16px;
@@ -94,7 +94,7 @@
     }
     .result__content {
       font-size: 14px;
-      line-height: 1.2;
+      line-height: 1.5;
       color: white;
       margin: 0;
     }
@@ -122,13 +122,17 @@
       <form class="form">
         <label for="interface" class="settings__label">interface GigabitEthernet</label>
         <input type="text" class="form__input" id="interface" placeholder="interface number" minlength="1" maxlength="100" required>
-        <label for="bandwidth" class="settings__label">bandwidth, kbit/s</label>
+        <label for="current-policy" class="settings__label">current policy</label>
+        <input type="text" class="form__input" id="current-policy" placeholder="policy name" minlength="1" maxlength="100" required>
+        <label for="bandwidth" class="settings__label">new&nbsp;bandwidth</label>
         <select class="form__select" name="" id="bandwidth">
-          <option value="512K">512 kbit/s</option>
-          <option value="1M">1 Mbit/s</option>
-          <option value="1536K">1.5 Mbit/s</option>
-          <option value="2M">2 Mbit/s</option>
-          <option value="4M">4 Mbit/s</option>
+          <option value=""></option>
+          <option value="512">0.5 Mbit/s</option>
+          <option value="1024">1 Mbit/s</option>
+          <option value="1536">1.5 Mbit/s</option>
+          <option value="2048">2 Mbit/s</option>
+          <option value="2560">2.5 Mbit/s</option>
+          <option value="4096">4 Mbit/s</option>
         </select>
       </form>
     </section>
@@ -136,20 +140,11 @@
     <section class="result page__section">
       <h2 class="page__section-title">configuration</h2>
       <p class="result__content result__interface"></p>
-      <p class="result__content">no service-policy input bronze_256K_in</p>
-      <p class="result__content">no service-policy input 512K_in</p>
-      <p class="result__content">no service-policy input bronze_512K_in</p>
-      <p class="result__content">no service-policy input 1M_in</p>
-      <p class="result__content">no service-policy input bronze_1M_in</p>
-      <p class="result__content">no service-policy input bronze_2M_in</p>
-      <p class="result__content">no service-policy output bronze_256K_out</p>
-      <p class="result__content">no service-policy output 512K_out</p>
-      <p class="result__content">no service-policy output bronze_512K_out</p>
-      <p class="result__content">no service-policy output 1M_out</p>
-      <p class="result__content">no service-policy output bronze_1M_out</p>
-      <p class="result__content">no service-policy output bronze_2M_out</p>
-      <p class="result__content result__policy-in"></p>
-      <p class="result__content result__policy-out"></p>
+      <p class="result__content result__bandwidth"></p>
+      <p class="result__content result__policy_remove-in"></p>
+      <p class="result__content result__policy_remove-out"></p>
+      <p class="result__content result__policy_add-in"></p>
+      <p class="result__content result__policy_add-out"></p>
       <p class="result__content result__interface-show"></p>
     </section>
   </main>
@@ -159,16 +154,24 @@
   </footer>
 
   <script>
-    const interfaceName = document.querySelector('.form__input');
-    const bandwidth = document.getElementById('bandwidth');
-    console.log(bandwidth);
+    const interfaceName = document.getElementById('interface');
+    const currentPolicy = document.getElementById('current-policy');
+    const newBandwidth = document.getElementById('bandwidth');
+
     interfaceName.addEventListener('keyup', () => {
       document.querySelector('.result__interface').textContent = `int GigabitEthernet ${interfaceName.value}`;
       document.querySelector('.result__interface-show').textContent = `do sh run int GigabitEthernet ${interfaceName.value}`;
     });
+
+    currentPolicy.addEventListener('keyup', () => {
+      document.querySelector('.result__policy_remove-in').textContent = `no service-policy input ${currentPolicy.value}_in`;
+      document.querySelector('.result__policy_remove-out').textContent = `no service-policy output ${currentPolicy.value}_out`;
+    });
+
     bandwidth.addEventListener('click', () => {
-      document.querySelector('.result__policy-in').textContent = `service-policy input bronze_${bandwidth.value}_in`;
-      document.querySelector('.result__policy-out').textContent = `service-policy output bronze_${bandwidth.value}_out`;
+      document.querySelector('.result__bandwidth').textContent = `bandwidth ${newBandwidth.value}`;
+      document.querySelector('.result__policy_add-in').textContent = `service-policy input pr_${newBandwidth.value}k_in`;
+      document.querySelector('.result__policy_add-out').textContent = `service-policy output pr_${newBandwidth.value}k_out`;
     });
   </script>
 </body>
