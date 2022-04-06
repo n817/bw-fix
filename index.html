@@ -20,6 +20,7 @@
     }
     .page__section {
       display: flex;
+      position: relative;
       flex-direction: column;
       justify-content: flex-start;
       align-items: flex-start;
@@ -42,7 +43,7 @@
       border-bottom: solid 1px #545454;
     }
     .header__title {
-      font-size: 18px;
+      font-size: 14px;
       line-height: 22px;
       font-weight: 900;
       color: #545454;
@@ -92,18 +93,43 @@
       color: #545454;
       margin: 0;
     }
-    .result__content {
+    .result {
       font-size: 14px;
       line-height: 1.5;
       color: white;
       margin: 0;
+    }
+    .clipboard-button {
+      width: 100px;
+      height: 30px;
+      border: 1px solid #545454;
+      border-radius: 5px;
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: transparent;
+      font-size: 16px;
+      line-height: 16px;
+      font-weight: 500;
+      color: #545454;
+    }
+    .clipboard-button:hover {
+      cursor: pointer;
+      transition: 0.2s;
+      opacity: 0.8;
+      transform: translateX(-50%) scale(1.2);
+    }
+    .clipboard-button:focus {
+      opacity: 0.5;
+
     }
     .footer {
       border-top: solid 1px #545454;
       padding-left: 10px;
     }
     .footer__content {
-      font-size: 18px;
+      font-size: 14px;
       line-height: 22px;
       color: #545454;
       margin: 0;
@@ -137,42 +163,68 @@
       </form>
     </section>
 
-    <section class="result page__section">
+    <section class="configuration page__section">
       <h2 class="page__section-title">configuration</h2>
-      <p class="result__content result__interface"></p>
-      <p class="result__content result__bandwidth"></p>
-      <p class="result__content result__policy_remove-in"></p>
-      <p class="result__content result__policy_remove-out"></p>
-      <p class="result__content result__policy_add-in"></p>
-      <p class="result__content result__policy_add-out"></p>
-      <p class="result__content result__interface-show"></p>
+      <p class="result result_type_interface"></p>
+      <p class="result result_type_bandwidth"></p>
+      <p class="result result_type_policy-in-remove"></p>
+      <p class="result result_type_policy-out-remove"></p>
+      <p class="result result_type_policy-in-add"></p>
+      <p class="result result_type_policy-out-add"></p>
+      <p class="result result_type_interface-show"></p>
+      <button type="button" class="clipboard-button">copy</button>
     </section>
   </main>
 
   <footer class="footer">
-    <p class="footer__content">&copy; 2021</p>
+    <p class="footer__content">&copy; 2022</p>
   </footer>
 
   <script>
     const interfaceName = document.getElementById('interface');
     const currentPolicy = document.getElementById('current-policy');
     const newBandwidth = document.getElementById('bandwidth');
+    const clipboardButton = document.querySelector('.clipboard-button');
+    const resultInterface = document.querySelector('.result_type_interface');
+    const resultBandwidth = document.querySelector('.result_type_bandwidth');
+    const resultPolicyInRemove = document.querySelector('.result_type_policy-in-remove');
+    const resultPolicyOutRemove = document.querySelector('.result_type_policy-out-remove');
+    const resultPolicyInAdd = document.querySelector('.result_type_policy-in-add');
+    const resultPolicyOutAdd = document.querySelector('.result_type_policy-out-add');
+    const resultInterfaceShow = document.querySelector('.result_type_interface-show');
 
     interfaceName.addEventListener('keyup', () => {
-      document.querySelector('.result__interface').textContent = `int GigabitEthernet ${interfaceName.value}`;
-      document.querySelector('.result__interface-show').textContent = `do sh run int GigabitEthernet ${interfaceName.value}`;
+      resultInterface.textContent = `int GigabitEthernet ${interfaceName.value}\n`;
+      resultInterfaceShow.textContent = `do sh run int GigabitEthernet ${interfaceName.value}\n`;
     });
 
     currentPolicy.addEventListener('keyup', () => {
-      document.querySelector('.result__policy_remove-in').textContent = `no service-policy input ${currentPolicy.value}_in`;
-      document.querySelector('.result__policy_remove-out').textContent = `no service-policy output ${currentPolicy.value}_out`;
+      resultPolicyInRemove.textContent = `no service-policy input ${currentPolicy.value}_in\n`;
+      resultPolicyOutRemove.textContent = `no service-policy output ${currentPolicy.value}_out\n`;
     });
 
     bandwidth.addEventListener('click', () => {
-      document.querySelector('.result__bandwidth').textContent = `bandwidth ${newBandwidth.value}`;
-      document.querySelector('.result__policy_add-in').textContent = `service-policy input pr_${newBandwidth.value}k_in`;
-      document.querySelector('.result__policy_add-out').textContent = `service-policy output pr_${newBandwidth.value}k_out`;
+      resultBandwidth.textContent = `bandwidth ${newBandwidth.value}\n`;
+      resultPolicyInAdd.textContent = `service-policy input pr_${newBandwidth.value}k_in\n`;
+      resultPolicyOutAdd.textContent = `service-policy output pr_${newBandwidth.value}k_out\n`;
     });
+    
+    clipboardButton.addEventListener('click', copyToClipboard);
+
+    async function copyToClipboard() {
+
+      const resultSummary = 
+        resultInterface.textContent + 
+        resultBandwidth.textContent +
+        resultPolicyInRemove.textContent +
+        resultPolicyOutRemove.textContent +
+        resultPolicyInAdd.textContent +
+        resultPolicyOutAdd.textContent +
+        resultInterfaceShow.textContent;
+
+      await navigator.clipboard.writeText(resultSummary);
+    }
+
   </script>
 </body>
 </html>
