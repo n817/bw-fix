@@ -183,7 +183,7 @@
   <script>
     const interfaceName = document.getElementById('interface');
     const currentPolicy = document.getElementById('current-policy');
-    const newBandwidth = document.getElementById('bandwidth');
+    const bandwidth = document.getElementById('bandwidth');
     const clipboardButton = document.querySelector('.clipboard-button');
     const resultInterface = document.querySelector('.result_type_interface');
     const resultBandwidth = document.querySelector('.result_type_bandwidth');
@@ -192,6 +192,7 @@
     const resultPolicyInAdd = document.querySelector('.result_type_policy-in-add');
     const resultPolicyOutAdd = document.querySelector('.result_type_policy-out-add');
     const resultInterfaceShow = document.querySelector('.result_type_interface-show');
+    console.log(bandwidth);
 
     interfaceName.addEventListener('keyup', () => {
       resultInterface.textContent = `int GigabitEthernet ${interfaceName.value}\n`;
@@ -203,10 +204,10 @@
       resultPolicyOutRemove.textContent = `no service-policy output ${currentPolicy.value}_out\n`;
     });
 
-    bandwidth.addEventListener('click', () => {
-      resultBandwidth.textContent = `bandwidth ${newBandwidth.value}\n`;
-      resultPolicyInAdd.textContent = `service-policy input pr_${newBandwidth.value}k_in\n`;
-      resultPolicyOutAdd.textContent = `service-policy output pr_${newBandwidth.value}k_out\n`;
+    bandwidth.addEventListener('change', () => {
+      resultBandwidth.textContent = `bandwidth ${bandwidth.value}\n`;
+      resultPolicyInAdd.textContent = `service-policy input pr_${bandwidth.value}k_in\n`;
+      resultPolicyOutAdd.textContent = `service-policy output pr_${bandwidth.value}k_out\n`;
     });
     
     clipboardButton.addEventListener('click', copyToClipboard);
